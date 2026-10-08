@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType><TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>Framework</RootNamespace><AssemblyName>Framework</AssemblyName>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo><Nullable>disable</Nullable>
+    <AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Avalonia.Desktop" Version="11.3.13" />
+    <PackageReference Include="Tmds.DBus.Protocol" Version="0.21.3" />
+    <PackageReference Include="Avalonia.Themes.Simple" Version="11.3.13" />
+    <PackageReference Include="Oxyplot.Avalonia_11_1" Version="2.2.0" />
+    <ProjectReference Include="../Algorithms/Algorithms.csproj" />
+    <AvaloniaResource Include="Images/**" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,131 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:convert="clr-namespace:Framework.Converters"
+             x:Class="Framework.App" Name="Image Processing" RequestedThemeVariant="Light">
+  <Application.Resources>
+    <convert:ApplePaletteConverter x:Key="ApplePalette"/>
+    <convert:ImagePresenceConverter x:Key="ImagePresence"/>
+  </Application.Resources>
+  <Application.Styles>
+    <SimpleTheme/>
+    <StyleInclude Source="avares://OxyPlot.Avalonia/Themes/Default.axaml"/>
+    <Style Selector="Window">
+      <Setter Property="FontFamily" Value="SF Pro Text, Helvetica Neue, Arial"/>
+      <Setter Property="FontSize" Value="13"/>
+      <Setter Property="RequestedThemeVariant" Value="{Binding Theme, Converter={StaticResource ApplePalette}, ConverterParameter=Variant}"/>
+      <Setter Property="Background" Value="{Binding Theme, Converter={StaticResource ApplePalette}, ConverterParameter=Background}"/>
+      <Setter Property="Foreground" Value="{Binding Theme, Converter={StaticResource ApplePalette}, ConverterParameter=Text}"/>
+    </Style>
+    <Style Selector="Border.glass">
+      <Setter Property="Background" Value="{Binding Theme, Converter={StaticResource ApplePalette}, ConverterParameter=Surface}"/>
+      <Setter Property="BorderBrush" Value="{Binding Theme, Converter={StaticResource ApplePalette}, ConverterParameter=Border}"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="CornerRadius" Value="6"/>
+      <Setter Property="BoxShadow" Value="0 0 0 0 Transparent"/>
+    </Style>
+    <Style Selector="TextBlock.secondary">
+      <Setter Property="Foreground" Value="{Binding Theme, Converter={StaticResource ApplePalette}, ConverterParameter=Secondary}"/>
+    </Style>
+    <Style Selector="TextBlock.section">
+      <Setter Property="FontWeight" Value="SemiBold"/>
+      <Setter Property="FontSize" Value="17"/>
+      <Setter Property="Foreground" Value="{Binding Theme, Converter={StaticResource ApplePalette}, ConverterParameter=Text}"/>
+    </Style>
+    <Style Selector="MenuItem">
+      <Setter Property="FontSize" Value="12"/>
+      <Setter Property="Padding" Value="8,8"/>
+      <Setter Property="MinHeight" Value="34"/>
+      <Setter Property="CornerRadius" Value="7"/>
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="Foreground" Value="{Binding Theme, Converter={StaticResource ApplePalette}, ConverterParameter=Text}"/>
+    </Style>
+    <Style Selector="MenuItem /template/ Popup#PART_Popup > Border">
+      <Setter Property="Background" Value="{Binding Theme, Converter={StaticResource ApplePalette}, ConverterParameter=Surface}"/>
+      <Setter Property="BorderBrush" Value="{Binding Theme, Converter={StaticResource ApplePalette}, ConverterParameter=Border}"/>
+      <Setter Property="CornerRadius" Value="12"/>
+      <Setter Property="Padding" Value="5"/>
+      <Setter Property="BoxShadow" Value="0 8 24 0 #20000000"/>
+    </Style>
+    <Style Selector="MenuItem:selected /template/ Border#root">
+      <Setter Property="Background" Value="{Binding Theme, Converter={StaticResource ApplePalette}, ConverterParameter=SoftAccent}"/>
+      <Setter Property="BorderBrush" Value="Transparent"/>
+    </Style>
+    <Style Selector="MenuItem /template/ ContentPresenter#PART_HeaderPresenter">
+      <Setter Property="HorizontalAlignment" Value="Left"/>
+    </Style>
+    <Style Selector="MenuItem:checked /template/ Path#PART_Checkmark">
+      <Setter Property="IsVisible" Value="True"/>
+    </Style>
+    <Style Selector="Button">
+      <Setter Property="Background" Value="{Binding Theme, Converter={StaticResource ApplePalette}, ConverterParameter=Surface}"/>
+      <Setter Property="Foreground" Value="{Binding Theme, Converter={StaticResource ApplePalette}, ConverterParameter=Text}"/>
+      <Setter Property="BorderBrush" Value="{Binding Theme, Converter={StaticResource ApplePalette}, ConverterParameter=Border}"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="CornerRadius" Value="10"/>
+      <Setter Property="Padding" Value="14,8"/>
+      <Setter Property="MinHeight" Value="34"/>
+      <Setter Property="HorizontalContentAlignment" Value="Center"/>
+      <Setter Property="VerticalContentAlignment" Value="Center"/>
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Name="PART_Border" CornerRadius="{TemplateBinding CornerRadius}"
+                  Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+            <ContentPresenter Name="PART_ContentPresenter" Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+          </Border>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+    <Style Selector="Button:pointerover /template/ Border#PART_Border">
+      <Setter Property="Opacity" Value="0.78"/>
+    </Style>
+    <Style Selector="Button:pressed /template/ Border#PART_Border">
+      <Setter Property="Opacity" Value="0.6"/>
+    </Style>
+    <Style Selector="Button.accent">
+      <Setter Property="Background" Value="{Binding Theme, Converter={StaticResource ApplePalette}, ConverterParameter=Accent}"/>
+      <Setter Property="Foreground" Value="{Binding Theme, Converter={StaticResource ApplePalette}, ConverterParameter=AccentText}"/>
+      <Setter Property="BorderThickness" Value="0"/>
+    </Style>
+    <Style Selector="CheckBox">
+      <Setter Property="FontSize" Value="13"/>
+      <Setter Property="MinHeight" Value="36"/>
+      <Setter Property="Foreground" Value="{Binding Theme, Converter={StaticResource ApplePalette}, ConverterParameter=Text}"/>
+    </Style>
+    <Style Selector="TextBox">
+      <Setter Property="CornerRadius" Value="8"/>
+      <Setter Property="MinHeight" Value="34"/>
+      <Setter Property="Padding" Value="10,6"/>
+    </Style>
+    <Style Selector="Slider:horizontal">
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Grid Height="28">
+            <Border Height="4" Margin="10,0" CornerRadius="2" VerticalAlignment="Center"
+                    Background="{Binding Theme, Converter={StaticResource ApplePalette}, ConverterParameter=Track}"/>
+            <Track Name="PART_Track" Minimum="{TemplateBinding Minimum}" Maximum="{TemplateBinding Maximum}"
+                   Value="{TemplateBinding Value, Mode=TwoWay}" IsDirectionReversed="{TemplateBinding IsDirectionReversed}" Orientation="Horizontal">
+              <Track.DecreaseButton>
+                <RepeatButton Name="PART_DecreaseButton" Theme="{StaticResource SliderRepeatTrackTheme}">
+                  <RepeatButton.Template><ControlTemplate><Border Height="4" VerticalAlignment="Center" Margin="10,0,0,0" CornerRadius="2"
+                    Background="{Binding Theme, Converter={StaticResource ApplePalette}, ConverterParameter=Accent}"/></ControlTemplate></RepeatButton.Template>
+                </RepeatButton>
+              </Track.DecreaseButton>
+              <Track.IncreaseButton><RepeatButton Name="PART_IncreaseButton" Theme="{StaticResource SliderRepeatTrackTheme}"/></Track.IncreaseButton>
+              <Track.Thumb>
+                <Thumb Name="thumb" Width="22" Height="22">
+                  <Thumb.Template><ControlTemplate>
+                    <Border Width="20" Height="20" CornerRadius="10" Background="White" BorderBrush="#13000000" BorderThickness="1" BoxShadow="0 2 5 0 #25000000"/>
+                  </ControlTemplate></Thumb.Template>
+                </Thumb>
+              </Track.Thumb>
+            </Track>
+          </Grid>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+  </Application.Styles>
+</Application>

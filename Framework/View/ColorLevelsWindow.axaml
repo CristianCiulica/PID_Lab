@@ -1,0 +1,27 @@
+<Window xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Framework.ViewModel" xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia"
+        x:Class="Framework.View.ColorLevelsWindow" Title="{Binding Title}" Width="1240" Height="584"
+        CanResize="False" WindowStartupLocation="CenterScreen" Closing="WindowClosing" Icon="avares://Framework/Images/Icon.png">
+  <Grid Margin="24" ColumnDefinitions="*,18,200,18,*" RowDefinitions="42,*">
+    <TextBlock Text="Initial Image" Classes="section" VerticalAlignment="Center"/>
+    <TextBlock Grid.Column="2" Text="Settings" Classes="section" VerticalAlignment="Center"/>
+    <TextBlock Grid.Column="4" Text="Processed Image" Classes="section" VerticalAlignment="Center"/>
+    <Border Grid.Row="1" Classes="glass" Padding="12" ClipToBounds="True">
+      <oxy:PlotView Model="{Binding InitialPlot}" Background="Transparent"/>
+    </Border>
+    <Border Grid.Row="1" Grid.Column="4" Classes="glass" Padding="12" ClipToBounds="True">
+      <oxy:PlotView Model="{Binding ProcessedPlot}" Background="Transparent"/>
+    </Border>
+    <Border Grid.Row="1" Grid.Column="2" Classes="glass" Padding="18">
+      <StackPanel Spacing="14">
+        <StackPanel Orientation="Horizontal" Spacing="14" Margin="0,4,0,12">
+          <TextBlock Text="{Binding XPos}" Classes="secondary"/>
+          <TextBlock Text="{Binding YPos}" Classes="secondary"/>
+        </StackPanel>
+        <CheckBox Content="Blue Channel" IsChecked="{Binding IsBlueChannelVisible}" IsVisible="{Binding HasColorImage}"/>
+        <CheckBox Content="Green Channel" IsChecked="{Binding IsGreenChannelVisible}" IsVisible="{Binding HasColorImage}"/>
+        <CheckBox Content="Red Channel" IsChecked="{Binding IsRedChannelVisible}" IsVisible="{Binding HasColorImage}"/>
+      </StackPanel>
+    </Border>
+  </Grid>
+</Window>

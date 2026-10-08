@@ -1,0 +1,17 @@
+<Window xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Framework.ViewModel" xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia"
+        x:Class="Framework.View.SliderWindow" Title="Slider" Width="600" Height="154"
+        CanResize="False" WindowStartupLocation="CenterScreen" Closing="WindowClosing" Icon="avares://Framework/Images/Icon.png">
+  <Border Classes="glass" Margin="18" Padding="18">
+    <StackPanel Spacing="12">
+      <TextBlock Text="{Binding Description}" FontWeight="SemiBold" FontSize="15"/>
+      <Grid ColumnDefinitions="*,16,60">
+        <Slider x:Name="slider" Minimum="{Binding MinimumValue}" Maximum="{Binding MaximumValue}" Value="{Binding Value}"
+                SmallChange="{Binding Frequency}" TickFrequency="{Binding Frequency}" TickPlacement="BottomRight" IsSnapToTickEnabled="True" Cursor="Hand" Height="28"/>
+        <Border Grid.Column="2" CornerRadius="8" Background="{Binding Theme, Converter={StaticResource ApplePalette}, ConverterParameter=Canvas}" Padding="8,6">
+          <TextBlock Text="{Binding Value, ElementName=slider}" TextAlignment="Center"/>
+        </Border>
+      </Grid>
+    </StackPanel>
+  </Border>
+</Window>

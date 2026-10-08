@@ -1,0 +1,23 @@
+<Window xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Framework.ViewModel" xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia"
+        x:Class="Framework.View.DialogWindow" Title="Dialog Box" Width="420" Height="200" MinHeight="200"
+        CanResize="False" WindowStartupLocation="CenterScreen" Closing="WindowClosing" Icon="avares://Framework/Images/Icon.png">
+  <Border Classes="glass" Margin="18" Padding="20">
+    <Grid RowDefinitions="*,20,Auto">
+      <ItemsControl x:Name="parameterList" ItemsSource="{Binding Parameters}" Focusable="False">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <StackPanel Spacing="8" Margin="0,0,0,14">
+              <TextBlock Text="{Binding ParamText}" FontWeight="Medium" Foreground="{Binding $parent[Window].DataContext.Theme, Converter={StaticResource ApplePalette}, ConverterParameter=Text}"/>
+              <TextBox Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}" Loaded="ParameterBoxLoaded"/>
+            </StackPanel>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+      <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
+        <Button Content="Cancel" Click="CancelClick"/>
+        <Button Classes="accent" Content="Done" IsDefault="True" Click="DoneClick" MinWidth="70"/>
+      </StackPanel>
+    </Grid>
+  </Border>
+</Window>

@@ -1,0 +1,19 @@
+<Window xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Framework.ViewModel" xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia"
+        x:Class="Framework.View.HistogramWindow" Title="{Binding Title}" Width="{Binding Width, Mode=TwoWay}" MinWidth="400" Height="420"
+        CanResize="False" WindowStartupLocation="CenterScreen" Closing="WindowClosing" Icon="avares://Framework/Images/Icon.png">
+  <ItemsControl ItemsSource="{Binding Plots}" Margin="12">
+    <ItemsControl.ItemTemplate>
+      <DataTemplate>
+        <Border CornerRadius="18" BorderThickness="1" BorderBrush="{Binding $parent[Window].DataContext.Theme, Converter={StaticResource ApplePalette}, ConverterParameter=Border}"
+                Background="{Binding $parent[Window].DataContext.Theme, Converter={StaticResource ApplePalette}, ConverterParameter=Surface}"
+                Padding="12" Margin="8" BoxShadow="0 4 14 0 #090F2238">
+          <oxy:PlotView Model="{Binding}" Background="Transparent"/>
+        </Border>
+      </DataTemplate>
+    </ItemsControl.ItemTemplate>
+    <ItemsControl.ItemsPanel>
+      <ItemsPanelTemplate><UniformGrid Rows="1" Columns="{Binding Items.Count, RelativeSource={RelativeSource AncestorType=ItemsControl}}"/></ItemsPanelTemplate>
+    </ItemsControl.ItemsPanel>
+  </ItemsControl>
+</Window>
