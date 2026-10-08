@@ -6,6 +6,7 @@ namespace Algorithms.Tools
     public class Tools
     {
         #region Copy
+
         public static Image<Gray, byte> Copy(Image<Gray, byte> inputImage)
         {
             Image<Gray, byte> result = inputImage.Clone();
@@ -17,9 +18,11 @@ namespace Algorithms.Tools
             Image<Bgr, byte> result = inputImage.Clone();
             return result;
         }
+
         #endregion
 
         #region Invert
+
         public static Image<Gray, byte> Invert(Image<Gray, byte> inputImage)
         {
             Image<Gray, byte> result = new Image<Gray, byte>(inputImage.Size);
@@ -54,9 +57,11 @@ namespace Algorithms.Tools
 
             return result;
         }
+
         #endregion
 
         #region Binarization
+
         public static Image<Gray, byte> Binarization(
             Image<Gray, byte> inputImage)
         {
@@ -83,9 +88,11 @@ namespace Algorithms.Tools
             using var grayImage = Convert(inputImage);
             return Binarization(grayImage);
         }
+
         #endregion
-        
+
         #region Mirror
+
         public static Image<Gray, byte> Mirroring(Image<Gray, byte> inputImage)
         {
             Image<Gray, byte> result = new Image<Gray, byte>(inputImage.Size);
@@ -117,9 +124,11 @@ namespace Algorithms.Tools
 
             return result;
         }
+
         #endregion
 
         #region Convert color image to grayscale image
+
         public static Image<Gray, byte> Convert(
             Image<Bgr, byte> inputImage)
         {
@@ -128,6 +137,76 @@ namespace Algorithms.Tools
 
             return result;
         }
+
         #endregion
+
+        #region Rotate
+
+        public static Image<Gray, byte> RotateClockwise(Image<Gray, byte> inputImage)
+        {
+            Image<Gray, byte> result = new Image<Gray, byte>(inputImage.Height, inputImage.Width);
+            
+            for (int y = 0; y < inputImage.Height; y++)
+                for (int x = 0; x < inputImage.Width; x++)
+                {
+                    int newX = inputImage.Height - 1 - y;
+                    int newY = x;
+
+                    result.Data[newY, newX, 0] = inputImage.Data[y, x, 0];
+                }
+            
+            return result;
+        }
+        public static Image<Bgr, byte> RotateClockwise(Image<Bgr, byte> inputImage)
+        {
+            Image<Bgr, byte> result = new Image<Bgr, byte>(inputImage.Height, inputImage.Width);
+            for (int y = 0; y < inputImage.Height; y++)
+                for (int x = 0; x < inputImage.Width; x++)
+                {
+                    int newX = inputImage.Height - 1 - y;
+                    int newY = x;
+
+                    for (int c = 0; c < 3; c++)
+                        result.Data[newY, newX, c] = inputImage.Data[y, x, c];
+                }
+            
+            return result;
+        }
+        public static Image<Gray, byte> RotateAntiClockwise(Image<Gray, byte> inputImage)
+        {
+            Image<Gray, byte> result = new Image<Gray, byte>(inputImage.Height, inputImage.Width);
+
+            for (int y = 0; y < inputImage.Height; y++)
+                for (int x = 0; x < inputImage.Width; x++)
+                {
+                    int newX = y;
+                    int newY = inputImage.Width - 1 - x;
+
+                    result.Data[newY, newX, 0] = inputImage.Data[y, x, 0];
+                }
+
+            return result;
+        }
+        public static Image<Bgr, byte> RotateAntiClockwise(Image<Bgr, byte> inputImage)
+        {
+            Image<Bgr, byte> result = new Image<Bgr, byte>(inputImage.Height, inputImage.Width);
+
+            for (int y = 0; y < inputImage.Height; y++)
+                for (int x = 0; x < inputImage.Width; x++)
+                {
+                    int newX = y;
+                    int newY = inputImage.Width - 1 - x;
+
+                    for (int c = 0; c < 3; c++)
+                    {
+                        result.Data[newY, newX, c] = inputImage.Data[y, x, c];
+                    }
+                }
+
+            return result;
+        }
+
+        #endregion
+        
     }
 }

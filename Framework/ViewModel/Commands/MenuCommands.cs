@@ -633,9 +633,66 @@ namespace Framework.ViewModel.Commands
             }
             else if (ColorInitialImage != null)
             {
-                ColorInitialImage = Tools.Mirroring(ColorInitialImage);
+                ColorProcessedImage = Tools.Mirroring(ColorInitialImage);
             }
         }
+        #endregion
+
+        #region Rotate
+        
+        private ICommand _rotateClockwiseCommand;
+
+        public ICommand RotateClockwiseCommand
+        {
+            get
+            {
+                if (_rotateClockwiseCommand == null)
+                    _rotateClockwiseCommand = new RelayCommand(RotateClockwise);
+                return _rotateClockwiseCommand;
+            }
+        }
+
+        private void RotateClockwise(object parameter)
+        {
+            if (!IsImageLoaded())
+                return;
+            
+            ClearProcessedCanvas(parameter);
+            if (GrayInitialImage != null)
+            {
+                GrayProcessedImage = Tools.RotateClockwise(GrayInitialImage);
+            } else if (ColorInitialImage != null)
+                ColorProcessedImage = Tools.RotateClockwise(ColorInitialImage);
+        }
+    
+        private ICommand _rotateCounterclockwiseCommand;
+
+        public ICommand RotateCounterclockwiseCommand
+        {
+            get
+            {
+                if (_rotateCounterclockwiseCommand == null)
+                    _rotateCounterclockwiseCommand =
+                        new RelayCommand(RotateCounterclockwise);
+
+                return _rotateCounterclockwiseCommand;
+            }
+        }
+
+        private void RotateCounterclockwise(object parameter)
+        {
+            if (!IsImageLoaded())
+                return;
+
+            ClearProcessedCanvas(parameter);
+
+            if (GrayInitialImage != null)
+                GrayProcessedImage = Tools.RotateAntiClockwise(GrayInitialImage);
+            else if (ColorInitialImage != null)
+                ColorProcessedImage = Tools.RotateAntiClockwise(ColorInitialImage);
+        }
+
+
         #endregion
     }
 }

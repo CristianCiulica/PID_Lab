@@ -49,6 +49,16 @@
                 <MenuItem Header="Crop"
                           Command="{Binding Path=MenuCommands.MagnifierCommand}"/>
                 
+                <MenuItem Header="Rotate"
+                          x:Name="rotateMenu">
+                    <MenuItem Header="Clockwise 90deg"
+                              Command="{Binding Path=MenuCommands.RotateClockwiseCommand}"
+                              CommandParameter="{Binding ElementName=processedImageCanvas}"/>
+                    <MenuItem Header="Counterclockwise 90deg"
+                              Command="{Binding Path=MenuCommands.RotateCounterclockwiseCommand}"
+                              CommandParameter="{Binding ElementName=processedImageCanvas}"/>
+                </MenuItem>
+                
                 <MenuItem Header="Theme"
                           x:Name="themeMenu">
                     <MenuItem Header="Light"
