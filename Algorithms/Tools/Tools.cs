@@ -207,6 +207,45 @@ namespace Algorithms.Tools
         }
 
         #endregion
+
+        #region Crop
+
+        public static Image<Gray, byte> Crop( Image<Gray, byte> inputImage, int left, int top, int width, int height)
+        {
+            Image<Gray, byte> result = new Image<Gray, byte>(width, height);
+
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    result.Data[y, x, 0] =
+                        inputImage.Data[top + y, left + x, 0];
+                }
+            }
+
+            return result;
+        }
+
+        public static Image<Bgr, byte> Crop(Image<Bgr, byte> inputImage, int left, int top, int width, int height)
+        {
+            Image<Bgr, byte> result = new Image<Bgr, byte>(width, height);
+
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    for (int c = 0; c < 3; c++)
+                    {
+                        result.Data[y, x, c] =
+                            inputImage.Data[top + y, left + x, c];
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        #endregion
         
     }
 }

@@ -694,5 +694,62 @@ namespace Framework.ViewModel.Commands
 
 
         #endregion
+        
+        #region Crop
+        
+        private ICommand _cropImageCommand;
+        public ICommand CropImageCommand
+        {
+            get
+            {
+                if (_cropImageCommand == null)
+                    _cropImageCommand = new RelayCommand(Crop);
+
+                return _cropImageCommand;
+            }
+        }
+
+        private void Crop(object parameter)
+        {
+            if (!IsImageLoaded())
+                return;
+            if (MouseClickCollection.Count < 2)
+            {
+                MessageBox.Show(
+                    "Selecteaza doua colturi");
+                return;
+            }
+            
+            int count = MouseClickCollection.Count;
+
+            Point p1 = MouseClickCollection[count - 2];
+            Point p2 = MouseClickCollection[count - 1];
+            
+            int left = (int)Math.Floor(Math.Min(p1.X, p2.X));
+            int top = (int)Math.Floor(Math.Min(p1.Y, p2.Y));
+            int right = (int)Math.Floor(Math.Max(p1.X, p2.X));
+            int bottom = (int)Math.Floor(Math.Max(p1.Y, p2.Y));
+            
+            var image = _imageStore.GetImage(ImageCanvasType.Initial);
+
+            if (left < 0 || top < 0 || right >= image.Width || bottom >= image.Height)
+            {
+                MessageBox.Show("Selecteaza colturile in interior");
+                return;
+            }
+            
+            int width = right - left + 1;
+            int height = bottom - top + 1;
+            ClearProcessedCanvas(parameter);
+            
+            if (GrayInitialImage != null)
+                GrayProcessedImage =
+                    Tools.Crop(GrayInitialImage, left, top, width, height);
+            else
+                ColorProcessedImage =
+                    Tools.Crop(ColorInitialImage, left, top, width, height);
+        }
+
+        #endregion
     }
 }
