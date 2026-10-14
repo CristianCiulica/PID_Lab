@@ -104,11 +104,16 @@
             </MenuItem>
 
             <MenuItem Header="Pointwise operations">
-
+                <MenuItem Header="Contrast and Brightness"
+                          Command="{Binding MenuCommands.ContrastAndBrightnessCommand}"
+                          CommandParameter="{Binding ElementName=processedImageCanvas}"/>
+                <MenuItem Header="Gamma operator"
+                          Command="{Binding MenuCommands.GammaOperatorCommand}"
+                          CommandParameter="{Binding ElementName=processedImageCanvas}"/>
             </MenuItem>
 
             <MenuItem Header="Thresholding">
-
+                
             </MenuItem>
 
             <MenuItem Header="Filters">

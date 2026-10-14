@@ -8,7 +8,7 @@ using System.Diagnostics;
 using System.Windows.Input;
 using Avalonia.Media;
 using System.Collections.Generic;
-
+using Algorithms.Sections;
 using Framework.View;
 using Framework.Model;
 using Framework.Services;
@@ -501,6 +501,77 @@ namespace Framework.ViewModel.Commands
         #endregion
 
         #region Pointwise operations
+        private ICommand _contrastAndBrightnessCommand;
+        public ICommand ContrastAndBrightnessCommand
+        {
+            get
+            {
+                if (_contrastAndBrightnessCommand == null)
+                    _contrastAndBrightnessCommand = new RelayCommand(ContrastAndBrightness);
+                return _contrastAndBrightnessCommand;
+            }
+        }
+
+        private async void ContrastAndBrightness(object parameter)
+        {
+            var dialog = new DialogWindow(_mainVM,
+                new List<string> { "α — Contrast", "β — Brightness" },
+                values => values[0] > 0 ? null : "Alpha must be greater than 0.")
+            {
+                Title = "Contrast and Brightness"
+            };
+            await dialog.ShowDialog(DesktopRuntime.MainWindow);
+            var values = dialog.GetValues();
+            if (values == null)
+                return;
+
+            double alpha = values[0];
+            double beta = values[1];
+            
+            ClearProcessedCanvas(parameter);
+            
+            if(GrayInitialImage != null)
+                GrayProcessedImage = PointwiseOperations.ContrastAndBrightness(GrayInitialImage, alpha, beta);
+            else if (ColorInitialImage != null)
+                ColorProcessedImage = PointwiseOperations.ContrastAndBrightness(ColorInitialImage, alpha, beta);
+        }
+
+        private ICommand _gammaOperatorCommand;
+        public ICommand GammaOperatorCommand
+        {
+            get
+            {
+                if (_gammaOperatorCommand == null)
+                    _gammaOperatorCommand = new RelayCommand(GammaOperator);
+                return _gammaOperatorCommand;
+            }
+        }
+
+        private async void GammaOperator(object parameter)
+        {
+            if (!IsImageLoaded())
+                return;
+
+            var dialog = new DialogWindow(_mainVM,
+                new List<string> { "γ — Gamma" },
+                values => values[0] > 0 ? null : "Gamma must be greater than 0.")
+            {
+                Title = "Gamma operator"
+            };
+
+            await dialog.ShowDialog(DesktopRuntime.MainWindow);
+            var values = dialog.GetValues();
+            if (values == null)
+                return;
+
+            double gamma = values[0];
+            ClearProcessedCanvas(parameter);
+
+            if (GrayInitialImage != null)
+                GrayProcessedImage = PointwiseOperations.GammaOperator(GrayInitialImage, gamma);
+            else if (ColorInitialImage != null)
+                ColorProcessedImage = PointwiseOperations.GammaOperator(ColorInitialImage, gamma);
+        }
         #endregion
 
         #region Filters

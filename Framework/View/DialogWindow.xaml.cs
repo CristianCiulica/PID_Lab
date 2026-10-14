@@ -1,3 +1,4 @@
+using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -14,10 +15,12 @@ namespace Framework.View
         private readonly DialogVM _dialogVM;
         private bool _isFirstBoxFocused;
         private bool _isAccepted;
+        private readonly Func<List<double>, string> _validateValues;
 
-        public DialogWindow(MainVM mainVM, List<string> labels)
+        public DialogWindow(MainVM mainVM, List<string> labels, Func<List<double>, string> validateValues = null)
         {
             InitializeComponent();
+            _validateValues = validateValues;
             UiHelper.SetMainWindowAsOwner(this);
 
             _dialogVM = new DialogVM();
@@ -52,6 +55,16 @@ namespace Framework.View
                 MessageBox.Show(this, $"Please enter a number for \"{_dialogVM.Parameters[invalidIndex].ParamText.Trim()}\".");
 
                 var parameterBox = FindParameterBox(invalidIndex);
+                parameterBox?.Focus();
+                parameterBox?.SelectAll();
+                return;
+            }
+
+            string validationError = _validateValues?.Invoke(_dialogVM.GetValues());
+            if (validationError != null)
+            {
+                MessageBox.Show(this, validationError);
+                var parameterBox = FindParameterBox(0);
                 parameterBox?.Focus();
                 parameterBox?.SelectAll();
                 return;

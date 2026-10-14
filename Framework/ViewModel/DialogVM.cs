@@ -48,7 +48,7 @@ namespace Framework.ViewModel
 
         private static bool TryParseNumber(string text, out double value)
         {
-            return double.TryParse(text?.Replace(',', '.'), NumberStyles.Float, CultureInfo.InvariantCulture, out value);
+            return double.TryParse(text?.Replace(',', '.'), NumberStyles.Float, CultureInfo.InvariantCulture, out value) && double.IsFinite(value);
         }
 
         internal class DialogParameter
