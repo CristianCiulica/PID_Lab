@@ -4,5 +4,3 @@
     {
     }
 }
-
-//iplajer@gmail.com
