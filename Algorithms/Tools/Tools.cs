@@ -62,10 +62,9 @@ namespace Algorithms.Tools
 
         #region Binarization
 
-        public static Image<Gray, byte> Binarization(
-            Image<Gray, byte> inputImage)
+        public static Image<Gray, byte> Binarization(Image<Gray, byte> inputImage, int threshold)
         {
-            int T = 100;
+            int T = threshold;
             Image<Gray, byte> result = new Image<Gray, byte>(inputImage.Size);
 
             for (int y = 0; y < inputImage.Height; y++)
@@ -82,11 +81,10 @@ namespace Algorithms.Tools
             return result;
         }
 
-        public static Image<Gray, byte> Binarization(
-            Image<Bgr, byte> inputImage)
+        public static Image<Gray, byte> Binarization(Image<Bgr, byte> inputImage, int threshold)
         {
             using var grayImage = Convert(inputImage);
-            return Binarization(grayImage);
+            return Binarization(grayImage, threshold);
         }
 
         #endregion

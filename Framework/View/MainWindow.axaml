@@ -113,7 +113,9 @@
             </MenuItem>
 
             <MenuItem Header="Thresholding">
-                
+                <MenuItem Header="MinErr Threshold"
+                          Command="{Binding MenuCommands.MinErrThresholdCommand}"
+                          CommandParameter="{Binding ElementName=processedImageCanvas}"/>
             </MenuItem>
 
             <MenuItem Header="Filters">

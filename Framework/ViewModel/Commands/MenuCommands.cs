@@ -459,11 +459,11 @@ namespace Framework.ViewModel.Commands
 
             if (GrayInitialImage != null)
             {
-                GrayProcessedImage = Tools.Binarization(GrayInitialImage);
+                GrayProcessedImage = Tools.Binarization(GrayInitialImage, 100);
             }
             else if (ColorInitialImage != null)
             {
-                GrayProcessedImage = Tools.Binarization(ColorInitialImage);
+                GrayProcessedImage = Tools.Binarization(ColorInitialImage, 100);
             }
         }
         #endregion
@@ -822,5 +822,45 @@ namespace Framework.ViewModel.Commands
         }
 
         #endregion
+        
+        #region MinError Thresholding
+        private ICommand _minErrThresholdCommand;
+        public ICommand MinErrThresholdCommand
+        {
+            get
+            {
+                if (_minErrThresholdCommand == null)
+                    _minErrThresholdCommand = new RelayCommand(BinarizeImage_MinErrorThreshold);
+
+                return _minErrThresholdCommand;
+            }
+        }
+
+        private void BinarizeImage_MinErrorThreshold(object parameter)
+        {
+            if (!IsImageLoaded())
+                return;
+
+            if (GrayInitialImage != null)
+            {
+                int T = Thresholding.MinErr(GrayInitialImage);
+                var result = Tools.Binarization(GrayInitialImage, T);
+
+                ClearProcessedCanvas(parameter);
+                GrayProcessedImage = result;
+            }
+            else if (ColorInitialImage != null)
+            {
+                using var grayImage = Tools.Convert(ColorInitialImage);
+
+                int T = Thresholding.MinErr(grayImage);
+                var result = Tools.Binarization(grayImage, T);
+
+                ClearProcessedCanvas(parameter);
+                GrayProcessedImage = result;
+            }
+        }
+        #endregion
+        
     }
 }
