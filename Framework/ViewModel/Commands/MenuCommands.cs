@@ -881,24 +881,8 @@ namespace Framework.ViewModel.Commands
 
         private void CustomFilterCommand(object parameter)
         {
-            int[,] pixels =
-            {
-                { 10, 10, 15, 13, 14, 10 },
-                { 11,  9, 14, 13, 15, 10 },
-                { 10, 10, 11, 15, 14, 11 },
-                {  9,  9, 15, 11, 15,  9 },
-                { 10, 11, 11, 12, 14, 10 }
-            };
-
-            using var image = new Image<Gray, byte>(6, 5);
-
-            for (int y = 0; y < image.Height; y++)
-            {
-                for (int x = 0; x < image.Width; x++)
-                {
-                    image.Data[y, x, 0] = (byte)pixels[y, x];
-                }
-            }
+            if (!IsImageLoaded())
+                return;
 
             double[,] horizontal =
             {
@@ -912,11 +896,18 @@ namespace Framework.ViewModel.Commands
                 { 0.25 }
             };
 
-            using var horizontalResult = Filters.ApplyFilter(image, horizontal);
-            var result = Filters.ApplyFilter(horizontalResult, vertical);
-
             ClearProcessedCanvas(parameter);
-            GrayProcessedImage = result;
+
+            if (ColorInitialImage != null)
+            {
+                using var horizontalResult = Filters.ApplyFilter(ColorInitialImage, horizontal);
+                ColorProcessedImage = Filters.ApplyFilter(horizontalResult, vertical);
+            }
+            else
+            {
+                using var horizontalResult = Filters.ApplyFilter(GrayInitialImage, horizontal);
+                GrayProcessedImage = Filters.ApplyFilter(horizontalResult, vertical);
+            }
         }
 
         #endregion

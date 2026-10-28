@@ -18,7 +18,7 @@ namespace Emgu.CV
         int Height { get; }
         System.Drawing.Size Size { get; }
     }
-    public class Image<TColor, TDepth> : IImage where TColor : struct, IColor where TDepth : unmanaged
+    public class Image<TColor, TDepth> : IImage where TColor : struct, IColor where TDepth : new()
     {
         public int Width { get; }
         public int Height { get; }

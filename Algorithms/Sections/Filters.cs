@@ -6,30 +6,43 @@ namespace Algorithms.Sections
 {
     public class Filters
     {
-        public static Image<Gray, byte> ApplyFilter(Image<Gray, byte> image, double[,] filter)
+        public static Image<TColor, TDepth> ApplyFilter<TColor, TDepth>(
+            Image<TColor, TDepth> image, double[,] filter)
+            where TColor : struct, IColor
+            where TDepth : new()
         {
-            Image<Gray, byte> result = new Image<Gray, byte>(image.Size);
+            Image<TColor, TDepth> result = new Image<TColor, TDepth>(image.Size);
             int height = filter.GetLength(0) / 2;
             int width = filter.GetLength(1) / 2;
+            int channels = image.Data.GetLength(2);
             
-            Image<Gray, byte> paddedImage = new Image<Gray, byte>(image.Width + 2 * width, image.Height + 2 * height);
+            Image<TColor, TDepth> paddedImage = new Image<TColor, TDepth>(image.Width + 2 * width, image.Height + 2 * height);
+            
             CvInvoke.CopyMakeBorder(image, paddedImage, height, height, width, width, Emgu.CV.CvEnum.BorderType.Reflect101);
             for(int y=height; y<paddedImage.Height-height; y++)
             {
                 for(int x=width; x<paddedImage.Width-width; x++)
                 {
-                    double sum = 0;
-
-                    for(int i=-height; i<=height; i++)
+                    for (int c = 0; c < channels; c++)
                     {
-                        for(int j=-width; j<=width; j++)
-                        {
-                            sum += paddedImage.Data[y+i, x+j, 0] * filter[i+height, j+width];
-                        }
-                    }
+                        double sum = 0.0;
 
-                    int value = (int)Math.Round(sum);
-                    result.Data[y - height, x - width, 0] = (byte)Math.Clamp(value, 0, 255);
+                        for(int i=-height; i<=height; i++)
+                        {
+                            for(int j=-width; j<=width; j++)
+                            {
+                                double pixel = Convert.ToDouble(paddedImage.Data[y + i, x + j, c]);
+                                sum += pixel * filter[i+height, j+width];
+                            }
+                        }
+
+                        double rounded = Math.Round(sum);
+                        if (typeof(TDepth) == typeof(byte))
+                            rounded = Math.Clamp(rounded, 0, 255);
+
+                        result.Data[y - height, x - width, c] =
+                            (TDepth)Convert.ChangeType(rounded, typeof(TDepth));
+                    }
                 }
             }
             return result;
