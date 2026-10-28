@@ -848,6 +848,7 @@ namespace Framework.ViewModel.Commands
 
                 ClearProcessedCanvas(parameter);
                 GrayProcessedImage = result;
+                MessageBox.Show($"Pragul de binarizare: T = {T}");
             }
             else if (ColorInitialImage != null)
             {
@@ -858,8 +859,66 @@ namespace Framework.ViewModel.Commands
 
                 ClearProcessedCanvas(parameter);
                 GrayProcessedImage = result;
+                MessageBox.Show($"Pragul de binarizare: T = {T}");
             }
         }
+        #endregion
+        
+        #region CustomFilter
+
+        private ICommand _customFilterCommand;
+
+        public ICommand CustomFilter
+        {
+            get
+            {
+                if (_customFilterCommand == null)
+                    _customFilterCommand = new RelayCommand(CustomFilterCommand);
+
+                return _customFilterCommand;
+            }
+        }
+
+        private void CustomFilterCommand(object parameter)
+        {
+            int[,] pixels =
+            {
+                { 10, 10, 15, 13, 14, 10 },
+                { 11,  9, 14, 13, 15, 10 },
+                { 10, 10, 11, 15, 14, 11 },
+                {  9,  9, 15, 11, 15,  9 },
+                { 10, 11, 11, 12, 14, 10 }
+            };
+
+            using var image = new Image<Gray, byte>(6, 5);
+
+            for (int y = 0; y < image.Height; y++)
+            {
+                for (int x = 0; x < image.Width; x++)
+                {
+                    image.Data[y, x, 0] = (byte)pixels[y, x];
+                }
+            }
+
+            double[,] horizontal =
+            {
+                { 0.25, 0.5, 0.25 }
+            };
+
+            double[,] vertical =
+            {
+                { 0.25 },
+                { 0.5 },
+                { 0.25 }
+            };
+
+            using var horizontalResult = Filters.ApplyFilter(image, horizontal);
+            var result = Filters.ApplyFilter(horizontalResult, vertical);
+
+            ClearProcessedCanvas(parameter);
+            GrayProcessedImage = result;
+        }
+
         #endregion
         
     }

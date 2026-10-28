@@ -1,3 +1,3 @@
 #!/bin/zsh
 cd -- "${0:A:h}"
-exec /usr/bin/open "$PWD/Image Processing.app"
+exec /usr/local/share/dotnet/dotnet run --project Framework/Framework.csproj --no-restore

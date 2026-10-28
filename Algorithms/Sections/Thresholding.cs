@@ -13,7 +13,7 @@ namespace Algorithms.Sections
 
             int T = 0;
             double minErr = 1000;
-
+            
             for (int t = 0; t <= 255; t++)
             {
                 double P1 = 0;
