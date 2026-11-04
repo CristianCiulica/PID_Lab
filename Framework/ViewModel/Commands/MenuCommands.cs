@@ -26,6 +26,34 @@ namespace Framework.ViewModel.Commands
         private readonly MainVM _mainVM;
         private readonly IImageStore _imageStore;
         private readonly IWindowService _windowService;
+        private double _gaussianSigmaX = 1.0;
+        private double _gaussianSigmaY = 1.0;
+
+        public double GaussianSigmaX
+        {
+            get => _gaussianSigmaX;
+            set
+            {
+                if (_gaussianSigmaX == value)
+                    return;
+
+                _gaussianSigmaX = value;
+                NotifyPropertyChanged(nameof(GaussianSigmaX));
+            }
+        }
+
+        public double GaussianSigmaY
+        {
+            get => _gaussianSigmaY;
+            set
+            {
+                if (_gaussianSigmaY == value)
+                    return;
+
+                _gaussianSigmaY = value;
+                NotifyPropertyChanged(nameof(GaussianSigmaY));
+            }
+        }
 
         public MenuCommands(MainVM mainVM, IImageStore imageStore, IWindowService windowService)
         {
@@ -864,6 +892,57 @@ namespace Framework.ViewModel.Commands
         }
         #endregion
         
+        #region Gaussian filters
+
+        private ICommand _setGaussianSigmasCommand;
+        public ICommand SetGaussianSigmasCommand => _setGaussianSigmasCommand ??= new RelayCommand(SetGaussianSigmas);
+
+        private async void SetGaussianSigmas(object parameter)
+        {
+            var dialog = new DialogWindow(_mainVM,
+                new List<string> { "Sigma X", "Sigma Y" },
+                values => values[0] > 0 && values[1] > 0
+                    ? null
+                    : "Sigma X and Sigma Y must be greater than 0.")
+            {
+                Title = "Gaussian filter parameters"
+            };
+
+            await dialog.ShowDialog(DesktopRuntime.MainWindow);
+            var values = dialog.GetValues();
+            if (values == null)
+                return;
+
+            GaussianSigmaX = values[0];
+            GaussianSigmaY = values[1];
+        }
+
+        private ICommand _gaussianFilterCommand;
+        public ICommand GaussianFilterCommand => _gaussianFilterCommand ??= new RelayCommand(ApplyGaussianFilter);
+
+        private bool IsGaussianSigmaValid(double sigma)
+        {
+            if (sigma > 0 && !double.IsNaN(sigma) && !double.IsInfinity(sigma))
+                return true;
+
+            MessageBox.Show("Sigma values must be positive numbers.");
+            return false;
+        }
+
+        private void ApplyGaussianFilter(object parameter)
+        {
+            if (!IsImageLoaded() || !IsGaussianSigmaValid(GaussianSigmaX) || !IsGaussianSigmaValid(GaussianSigmaY))
+                return;
+
+            ClearProcessedCanvas(parameter);
+            if (ColorInitialImage != null)
+                ColorProcessedImage = Filters.GaussianFilter(ColorInitialImage, GaussianSigmaX, GaussianSigmaY);
+            else
+                GrayProcessedImage = Filters.GaussianFilter(GrayInitialImage, GaussianSigmaX, GaussianSigmaY);
+        }
+
+        #endregion
+
         #region CustomFilter
 
         private ICommand _customFilterCommand;

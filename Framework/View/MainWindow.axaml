@@ -119,10 +119,16 @@
             </MenuItem>
 
             <MenuItem Header="Filters">
-                <MenuItem Header="Low-pass"
-                          Command="{Binding MenuCommands.LowPassCommand}"
-                          CommandParameter="{Binding ElementName=processedImageCanvas}"/>
-                
+                <MenuItem Header="Low-pass">
+                    <MenuItem Header="Gaussian filter">
+                        <MenuItem Header="Set Sigma X and Sigma Y..."
+                                  Command="{Binding MenuCommands.SetGaussianSigmasCommand}"/>
+                        <Separator/>
+                        <MenuItem Header="Apply Gaussian filter"
+                                  Command="{Binding MenuCommands.GaussianFilterCommand}"
+                                  CommandParameter="{Binding ElementName=processedImageCanvas}"/>
+                    </MenuItem>
+                </MenuItem>
                 <MenuItem Header="High-pass"
                           Command="{Binding MenuCommands.HighPassCommand}"
                           CommandParameter="{Binding ElementName=processedImageCanvas}"/>
@@ -148,8 +154,7 @@
                       Command="{Binding Path=MenuCommands.UseProcessedImageAsInitialImageCommand}"/>
         </Menu>
     </Border>
-    <Grid Grid.Row="1" ColumnDefinitions="*,1,*">
-      <Grid Grid.Column="0" RowDefinitions="46,*">
+    <Grid Grid.Row="1" ColumnDefinitions="*,1,*">      <Grid Grid.Column="0" RowDefinitions="46,*">
         <TextBlock Text="Initial Image" FontSize="14" FontWeight="SemiBold" Margin="16,0" VerticalAlignment="Center"/>
         <Border Grid.Row="1" Margin="12,0,12,12" CornerRadius="4" ClipToBounds="True"
                 Background="{Binding Theme, Converter={StaticResource ApplePalette}, ConverterParameter=Canvas}"
