@@ -119,6 +119,9 @@
             </MenuItem>
 
             <MenuItem Header="Filters">
+                <MenuItem Header="Average filter"
+                          Command="{Binding MenuCommands.AverageFilterCommand}"
+                          CommandParameter="{Binding ElementName=processedImageCanvas}"/>
                 <MenuItem Header="Low-pass">
                     <MenuItem Header="Gaussian filter">
                         <MenuItem Header="Set Sigma X and Sigma Y..."
